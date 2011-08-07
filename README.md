@@ -12,7 +12,7 @@ requests adding support would be welcome.
 REQUIREMENTS
 =============
 
-* [[Opscode Java Coobook (version >= 1.1)|http://community.opscode.com/cookbooks/java]]
+* [Opscode Java Coobook (version >= 1.1)](http://community.opscode.com/cookbooks/java)
 
 
 ATTRIBUTES
