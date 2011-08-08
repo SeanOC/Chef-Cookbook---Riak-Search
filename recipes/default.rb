@@ -43,9 +43,40 @@ package package_name do
     provider Chef::Provider::Package::Dpkg
 end
 
+[
+    node[:riak][:core][:ring_state_dir],
+    node[:riak][:kv][:mapred_queue_dir],
+    node[:riak][:bitcask][:data_root],
+    node[:riak][:merge_index][:data_root]
+].each do |path|
+    directory path do
+        owner "riak"
+        group "riak"
+        mode 0755 
+        action :create
+        recursive true
+    end
+end
+
+
 service "riaksearch" do
     supports :start => true, :stop => true, :restart => true
     action [ :enable ]
     #subscribes :restart, resources(:template => [ "#{node[:riak][:package][:config_dir]}/app.config",
     #                                              "#{node[:riak][:package][:config_dir]}/vm.args" ])
+end
+
+template "/etc/riaksearch/app.config" do
+    owner "riak"
+    group "riak"
+    mode 0644
+    notifies :restart, "service[riaksearch]"
+end
+
+
+template "/etc/riaksearch/vm.args" do
+    owner "riak"
+    group "riak"
+    mode 0644
+    notifies :restart, "service[riaksearch]"
 end
